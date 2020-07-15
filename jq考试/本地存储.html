@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        (function(){
+            function get(){
+               var data =  localStorage.getItem('uesername');
+               if(data === null){
+                   alert('当前没有存储数据');
+               }
+            }
+            
+            function set(data){
+                localStorage.setItem('username',data);
+            }
+            set(123)
+            function load(){
+                
+            }
+        })()
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery.min.js"></script>
+</head>
+
+<body>
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="username" placeholder="请输入姓名">
+        <input type="text" id="sex" placeholder="请输入性别">
+        <input type="text" id="age" placeholder="请输入年龄">
+        <input type="button" value="提交" id="btn">
+    </div>
+    <table border="1" width="540">
+        <thead>
+            <tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <!-- 、发布留言并存储到本地
+
+要求1：点击提交按钮，让用户输入的内容分别加入到表格对应的列表中
+
+要求2：点击每一行的删除按钮，能删除当前行
+
+要求3：刷新页面时能保留当前的页面效果（数据状态不会消失）
+
+要求4：代码规范 -->
+    <script>
+        $(function () {
+            //提交，删除，渲染都需要读数据
+            function get() {
+                var arr = JSON.parse(localStorage.getItem('stu'));
+                // 如果之前页面没存储过这个数据
+                if (arr == null) {
+                    return []
+                } else {
+                    return arr
+                }
+            }
+            // 提交，删除，渲染都需要存数据
+            function set(data) {
+                localStorage.setItem('stu', JSON.stringify(data));
+            }
+            // 渲染页面
+            function load() {
+                // 添加前清空tbody
+                $('tbody').empty();
+                // 获取数据，保证是最新的
+                var arr = get();
+                // 遍历数组
+                $.each(arr, function (i, el) {
+                    // 给tbody添加数据，顺便存储索引，因为a标签是表兄弟关系，index()拿不到索引
+                    $('tbody').append(`<tr>
+                                        <td>${el.name}</td>
+                                        <td>${el.sex}</td>
+                                        <td>${el.age}</td>
+                                        <td>
+                                            <a href="javascript:;" id="${i}">删除</a>
+                                        </td>
+                                    </tr>`)
+                })
+            }
+            // 刷新加载一次
+            load();
+            // 点击提交，存数据
+            $('#btn').on('click', function () {
+                //    判断值是否为空
+                if ($('#username').val().trim() == '' || $('#sex').val().trim() == '' || $('#age').val().trim() == '') {
+                    alert('不能为空');
+                    // 清空内容
+                    $('#username').val('');
+                    $('#sex').val('');
+                    $('#age').val('');
+                } else {
+                    // 读数据
+                    var arr = get();
+                    // 修改arr内容
+                    arr.push({
+                        name: $('#username').val(),
+                        sex: $('#sex').val(),
+                        age: $('#age').val()
+                    })
+                    // 存到本地存储
+                    set(arr);
+                    // 渲染页面
+                    load();
+                    // 清空内容
+                    $('#username').val('');
+                    $('#sex').val('');
+                    $('#age').val('');
+                }
+            })
+            // 点击删除，用事件委托
+            $('tbody').on('click', 'a', function () {
+                // 取数据
+                var arr = get();
+                //  找索引, 因为a标签之间是表亲关系，index()找不到索引，所以把索引放到a标签自定义属性上了
+                var index = $(this).prop('id');
+                //  删除对应索引的数组内容
+                arr.splice(index, 1);
+                // 存数据
+                set(arr);
+                // 渲染
+                load()
+            })
+        })
+    </script>
+</body>
+
+</html>

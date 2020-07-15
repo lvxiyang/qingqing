@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 先找出字符串 '85872637471533203552943982' 中出现次数最多的数字及次数，然后去重后并排序（不准使用sort），使得到结果为 '0123456789'。
+
+        // 要求1：找到出现最多的数字和出现的次数
+
+        // 要求2：去除字符串中重复的数字
+
+        // 要求3：对去重后的字符串排序
+
+        // 要求4：代码规范
+
+        var str = '85872637471533203552943982';
+        // 用来保存数字出现的次数，用伪书组形式
+        var obj = {};
+        // 去重, 申明一个空数组，接收不重复的值
+        var arr = [];
+        // 用类似伪书组的方式保存，因为属性是数值，不能用.的方式，所以可以使用[]方式设置或者访问
+        for (var i = 0; i < str.length; i++) {
+            if (obj[str[i]]) {
+                obj[str[i]]++;
+            } else {
+                obj[str[i]] = 1;
+            }
+            // 去重，通过indexOf查当前字符索引和i是否匹配, 匹配就丢进新数组
+            if (str.indexOf(str[i]) == i) {
+                arr.push(str[i]);
+            }
+        }
+        console.log(obj);
+
+        // 冒泡排序
+        for (var i = 0; i < arr.length - 1; i++) {
+            for (var j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    var temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+        // 数组拼接成字符串
+        var newStr = arr.join('');
+        console.log(newStr);
+        // 遍历对象，找出最大值
+        // 假设索引0是最大的
+        var max = obj[0];
+        // 保存索引
+        var l;
+        for (var k in obj) {
+            if (max < obj[k]) {
+                max = obj[k];
+                // 拿最大值索引
+                l = k;
+            }
+        }
+        console.log('出现最多的是' + l + '出现次数是' + max + '次');
+    </script>
+</body>
+
+</html>
